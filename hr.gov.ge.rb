@@ -70,13 +70,17 @@ end
 # get the most current id
 # - it is possible that the ids are not in sequential order, 
 #   so get all ids on page and then pull the largest one
+# - you can override the end id by supplying it as an argument
 def get_end_id
-  page = Nokogiri::HTML(open(@base_url + @urls[:en][:locale]))
-  links = page.css('td#vac_ldate')
-  ids = links.map{|x| x['onclick'].split("'")[1].split("/").last.to_i}.sort
-  id = ids.last
+  if ARGV.length == 1
+    id = ARGV.first.to_i
+  else
+    page = Nokogiri::HTML(open(@base_url + @urls[:en][:locale]))
+    links = page.css('td#vac_ldate')
+    ids = links.map{|x| x['onclick'].split("'")[1].split("/").last.to_i}.sort
+    id = ids.last
+  end
   @log.info "end id = #{id}"
-
   id
 end
 
