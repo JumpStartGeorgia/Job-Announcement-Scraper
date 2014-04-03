@@ -55,13 +55,23 @@ end
 # get the id to start
 # - if there are no records on file then use 903, the first id
 # - else use the last record on file + 1
+#   - to get last record, get name of last folder in the last folder
 def get_start_id
   id = 903 # default value
   
   folders = Dir.glob(@data_path + "*")
   if Dir.exists?(@data_path) && !folders.empty?
-    start = folders.map{|x| x.split('/')[2].to_i}.sort.last
-    id = start + 1 if !start.nil?
+    length = @data_path.split('/').length
+    # get the last folder
+    last_folder = folders.map{|x| x.split('/')[length].to_i}.sort.last
+    # now in that folder, get the last folder
+    new_path = @data_path + last_folder.to_s + "/"
+    length = new_path.split('/').length
+    sub_folders = Dir.glob(new_path + "*")
+    if !sub_folders.empty?
+      last_folder = sub_folders.map{|x| x.split('/')[length].to_i}.sort.last
+      id = last_folder + 1 if !last_folder.nil?
+    end
   end
   @log.info "start id = #{id}"
   id
@@ -187,6 +197,10 @@ def process_response(response)
 
     locale = params[3]
     id = params[params.length-1]
+    # get the name of the folder for this id
+    # - the name is the id minus it's last 2 digits
+    id_folder = id[0..id.length-3]
+    folder_path = @data_path + id_folder + "/" + id + "/" + locale + "/"
     
 #    @log.info "processing response for id #{id} and locale #{locale}"
 
@@ -195,7 +209,7 @@ def process_response(response)
     
   
     # save the response body
-    file_path = @data_path + id + "/" + locale + "/" + @response_file
+    file_path = folder_path + @response_file
 		create_directory(File.dirname(file_path))
     File.open(file_path, 'w'){|f| f.write(doc)}
     
@@ -285,7 +299,7 @@ def process_response(response)
     end
 
     # save the json
-    file_path = @data_path + id + "/" + locale + "/" + @json_file
+    file_path = folder_path + @json_file
 		create_directory(File.dirname(file_path))
     File.open(file_path, 'w'){|f| f.write(json.to_json)}
   else
@@ -356,6 +370,7 @@ end
 # get the start / end ids
 start_id = get_start_id
 end_id = get_end_id
+
 # if start id is >= end id, stop
 if start_id >= end_id
   @log.info "------------------------------"
@@ -366,7 +381,6 @@ else
   # get the information
   make_requests((start_id..end_id).to_a)
 end
-
 
 =begin
 ####################################
