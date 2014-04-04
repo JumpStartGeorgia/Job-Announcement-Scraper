@@ -124,7 +124,6 @@ def json_template
   json[:qualifications][:work_experience] = nil
   json[:qualifications][:profession] = nil
   json[:qualifications][:age] = nil
-  json[:qualifications][:degree] = nil
   json[:qualifications][:knowledge_legal_acts] = nil
 
   # computers
