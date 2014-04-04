@@ -12,12 +12,7 @@ require 'json'
 require 'logger'
 require 'fileutils'
 
-####################################
-def create_directory(file_path)
-	if !file_path.nil? && file_path != "."
-		FileUtils.mkpath(file_path)
-	end
-end
+require_relative 'utilities'
 
 @start = Time.now
 
@@ -28,11 +23,6 @@ end
 
 @log.info "**********************************************"
 @log.info "**********************************************"
-
-# data path
-@data_path = 'data/hr.gov.ge/'
-@response_file = 'response.html'
-@json_file = 'data.json'
 
 
 ####################################
@@ -57,7 +47,7 @@ end
 # - else use the last record on file + 1
 #   - to get last record, get name of last folder in the last folder
 def get_start_id
-  id = 903 # default value
+  id = @hr_job_ge_start_id # default value
   
   folders = Dir.glob(@data_path + "*")
   if Dir.exists?(@data_path) && !folders.empty?
