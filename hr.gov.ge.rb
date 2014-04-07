@@ -13,6 +13,7 @@ require 'logger'
 require 'fileutils'
 
 require_relative 'utilities'
+require_relative 'database'
 
 @start = Time.now
 
@@ -86,94 +87,6 @@ end
 
 ####################################################
 
-def json_template
-  json = {}
-  json[:general] = {}
-  json[:general][:position] = nil
-  json[:general][:provided_by] = nil
-  json[:general][:category] = nil
-  json[:general][:deadline] = nil
-  json[:general][:salary] = nil
-  json[:general][:num_positions] = nil
-  json[:general][:location] = nil
-  json[:general][:job_type] = nil
-  json[:general][:probation_period] = nil
-  json[:general][:vacancy_id] = nil
-
-  json[:contact] = {}
-  json[:contact][:address] = nil
-  json[:contact][:phone] = nil
-  json[:contact][:contact_person] = nil
-  
-  json[:job_description] = nil
-  json[:additional_requirements] = nil
-  json[:additional_info] = nil
-
-  json[:qualifications] = {}
-  json[:qualifications][:degree] = nil
-  json[:qualifications][:work_experience] = nil
-  json[:qualifications][:profession] = nil
-  json[:qualifications][:age] = nil
-  json[:qualifications][:knowledge_legal_acts] = nil
-
-  # computers
-  json[:computers] = []
-
-  # languages
-  json[:languages] = []
-
-  json
-end
-
-# not all fields are required
-# and there is no unique id for each field
-# so have to use the title text to find index to get value
-@keys = {}
-@keys[:eng] = {}
-@keys[:eng][:general] = {}
-@keys[:eng][:general][:position] = 'position:'
-@keys[:eng][:general][:provided_by] = 'provided by:'
-@keys[:eng][:general][:category] = 'category:'
-@keys[:eng][:general][:deadline] = 'application deadline:'
-@keys[:eng][:general][:salary] = 'salary:'
-@keys[:eng][:general][:num_positions] = 'number of positions:'
-@keys[:eng][:general][:location] = 'location:'
-@keys[:eng][:general][:job_type] = 'job type:'
-@keys[:eng][:general][:probation_period] = 'probation period:'
-@keys[:eng][:general][:vacancy_id] = 'vacancy n:'
-@keys[:eng][:qualifications] = {}
-@keys[:eng][:qualifications][:degree] = 'degree'
-@keys[:eng][:qualifications][:work_experience] = 'work experience'
-@keys[:eng][:qualifications][:profession] = 'profession'
-@keys[:eng][:qualifications][:age] = 'age'
-@keys[:eng][:qualifications][:knowledge_legal_acts] = 'knowledge of legal acts'
-@keys[:eng][:contact] = {}
-@keys[:eng][:contact][:address] = 'address'
-@keys[:eng][:contact][:phone] = 'phone number'
-@keys[:eng][:contact][:contact_person] = 'contact person'
-
-@keys[:geo] = {}
-@keys[:geo][:general] = {}
-@keys[:geo][:general][:position] = 'თანამდებობის დასახელება:'
-@keys[:geo][:general][:provided_by] = 'დამსაქმებელი:'
-@keys[:geo][:general][:category] = 'კატეგორია:'
-@keys[:geo][:general][:deadline] = 'განცხადების წარდგენის ბოლო ვადა:'
-@keys[:geo][:general][:salary] = 'თანამდებობრივი სარგო:'
-@keys[:geo][:general][:num_positions] = 'ადგილების რაოდენობა:'
-@keys[:geo][:general][:location] = 'სამსახურის ადგილმდებარეობა:'
-@keys[:geo][:general][:job_type] = 'სამუშაოს ტიპი:'
-@keys[:geo][:general][:probation_period] = 'გამოსაცდელი ვადა:'
-@keys[:geo][:general][:vacancy_id] = 'ვაკანსიის n:'
-@keys[:geo][:qualifications] = {}
-@keys[:geo][:qualifications][:degree] = 'მინიმალური განათლება'
-@keys[:geo][:qualifications][:work_experience] = 'სამუშაო გამოცდილება'
-@keys[:geo][:qualifications][:profession] = 'პროფესია'
-@keys[:geo][:qualifications][:age] = 'ასაკი'
-@keys[:geo][:qualifications][:knowledge_legal_acts] = 'სამართლებრივი აქტების ცოდნა'
-@keys[:geo][:contact] = {}
-@keys[:geo][:contact][:address] = 'საკონტაქტო მისამართი'
-@keys[:geo][:contact][:phone] = 'საკონტაქტო ტელეფონები'
-@keys[:geo][:contact][:contact_person] = 'საკონტაქტო პირი'
 
 
 
@@ -341,6 +254,9 @@ def make_requests(ids)
           @log.info "------------------------------"
           @log.info "It took #{Time.now - @start} seconds to process #{total_to_process} items"
           @log.info "------------------------------"
+          
+          # now update the database
+          update_database
         end
       end
 
@@ -365,7 +281,9 @@ if start_id >= end_id
   @log.info "------------------------------"
   @log.info "The start id is >= end id, so there is nothing to do."
   @log.info "------------------------------"
-  exit
+
+  # now update the database
+  update_database
 else
   # get the information
   make_requests((start_id..end_id).to_a)
