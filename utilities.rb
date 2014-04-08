@@ -303,14 +303,17 @@ def create_computer_sql_insert(mysql,json, jobs_id)
   return sql  
 end
 
-
+# update github with any changes
 def update_github
-  x = Subexec.run "git add ."
-  x = Subexec.run "git commit -am 'New jobs collected on #{Time.now.strftime('%F')}'"
-  x = Subexec.run "git push origin master"
   @log.info "------------------------------"
-  @log.info "Push to github resulted in the following:"
+  x = Subexec.run "git add ."
+  @log.info "git add: "
   @log.info x.output
-  @log.info x.exitstatus
+  x = Subexec.run "git commit -am 'New jobs collected on #{Time.now.strftime('%F')}'"
+  @log.info "git commit:"
+  @log.info x.output
+  x = Subexec.run "git push origin master"
+  @log.info "git push:"
+  @log.info x.output
   @log.info "------------------------------"
 end
