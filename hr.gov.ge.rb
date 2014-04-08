@@ -287,10 +287,6 @@ if start_id >= end_id
 
   # now update the database
   update_database
-  
-  # now push to git
-  update_github
-  
 else
   # get the information
   make_requests((start_id..end_id).to_a)
