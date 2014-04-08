@@ -1,6 +1,8 @@
 # encoding: utf-8
 #!/usr/bin/env ruby
 
+require 'subexec'
+
 # file paths
 @data_path = 'data/hr.gov.ge/'
 @response_file = 'response.html'
@@ -299,4 +301,16 @@ def create_computer_sql_insert(mysql,json, jobs_id)
   end
 
   return sql  
+end
+
+
+def update_github
+  x = Subexec.run "git add ."
+  x = Subexec.run "git commit -am 'New jobs collected on #{Time.now.strftime('%F')}'"
+  x = Subexec.run "git push origin master"
+  @log.info "------------------------------"
+  @log.info "Push to github resulted in the following:"
+  @log.info x.output
+  @log.info x.exitstatus
+  @log.info "------------------------------"
 end

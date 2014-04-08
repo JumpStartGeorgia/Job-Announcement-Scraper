@@ -257,6 +257,9 @@ def make_requests(ids)
           
           # now update the database
           update_database
+          
+          # now push to git
+          update_github
         end
       end
 
@@ -316,3 +319,6 @@ if Dir.exists?(@data_path) && !folders.empty?
 end
 
 =end
+
+
+
