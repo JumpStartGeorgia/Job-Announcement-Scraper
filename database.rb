@@ -1,5 +1,5 @@
-# encoding: utf-8
 #!/usr/bin/env ruby
+# encoding: utf-8
 
 ####################################################
 # to load the jobs to a database, please have the following:
