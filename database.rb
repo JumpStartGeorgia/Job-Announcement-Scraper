@@ -69,6 +69,8 @@ def update_database
           `category` varchar(500) DEFAULT NULL,\
           `deadline` varchar(500) DEFAULT NULL,\
           `salary` varchar(500) DEFAULT NULL,\
+          `salary_start` smallint DEFAULT NULL,\
+          `salary_end` smallint DEFAULT NULL,\
           `num_positions` varchar(500) DEFAULT NULL,\
           `location` varchar(1000) DEFAULT NULL,\
           `job_type` varchar(500) DEFAULT NULL,\
@@ -88,7 +90,9 @@ def update_database
           KEY `Index 1` (`id`),\
           KEY `Index 2` (`job_id`),\
           KEY `Index 3` (`locale`),\
-          KEY `Index 4` (`source`)\
+          KEY `Index 4` (`source`),\
+          KEY `Index 5` (`salary_start`),\
+          KEY `Index 6` (`salary_end`)\
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8"
     mysql.query(sql)
     sql = "CREATE TABLE IF NOT EXISTS `knowledge_computers` (\

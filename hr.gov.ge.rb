@@ -21,6 +21,7 @@ require_relative 'database'
 # delete existing log file
 #File.delete('hr.gov.ge.log') if File.exists?('hr.gov.ge.log')
 @log = Logger.new('hr.gov.ge.log')
+@missing_param_log = Logger.new('hr.gov.ge_missing_params.log')
 
 @log.info "**********************************************"
 @log.info "**********************************************"
@@ -127,12 +128,19 @@ def process_response(response)
     general_title = doc.css('#content-main #general_info li.title')
     general_lists = doc.css('#content-main #general_info li.info')
     if general_title.length > 0 && general_lists.length > 0
-      json[:general].keys.each do |key|
-        index = general_title.to_a.index{|x| x.text.strip.downcase == @keys[locale.to_sym][:general][key]}
+      general_title.each_with_index do |title, title_index|
+        title_text = title.text.strip.downcase
+        # get the index for the key with this text
+        index = @keys[locale.to_sym][:general].values.index{|x| title_text == x}
         if index
-          json[:general][key] = general_lists[index].text.strip    
-        end      
-      end      
+          # get the key name for this text
+          key = @keys[locale.to_sym][:general].keys[index]
+          # save the value
+          json[:general][key] = general_lists[title_index].text.strip    
+        else
+          @missing_param_log.error "Missing general json key for text: '#{title_text}' in record #{id}"
+        end
+      end
     end
 
     # job description
@@ -147,24 +155,38 @@ def process_response(response)
     contacts_title = doc.css('#content-main #contact_info li.title')
     contacts = doc.css('#content-main #contact_info li.info')
     if contacts_title.length > 0 && contacts.length > 0
-      json[:contact].keys.each do |key|
-        index = contacts_title.to_a.index{|x| x.text.strip.downcase == @keys[locale.to_sym][:contact][key]}
+      contacts_title.each_with_index do |title, title_index|
+        title_text = title.text.strip.downcase
+        # get the index for the key with this text
+        index = @keys[locale.to_sym][:contact].values.index{|x| title_text == x}
         if index
-          json[:contact][key] = contacts[index].text.strip    
-        end      
-      end      
+          # get the key name for this text
+          key = @keys[locale.to_sym][:contact].keys[index]
+          # save the value
+          json[:contact][key] = contacts[title_index].text.strip    
+        else
+          @missing_param_log.error "Missing contact json key for text: '#{title_text}' in record #{id}"
+        end
+      end
     end
     
     # qualifications
     qualifications_title = doc.css('#content-main #qualifications li.title')
     qualifications = doc.css('#content-main #qualifications li.info')
     if qualifications_title.length > 0 && qualifications.length > 0
-      json[:qualifications].keys.each do |key|
-        index = qualifications_title.to_a.index{|x| x.text.strip.downcase == @keys[locale.to_sym][:qualifications][key]}
+      qualifications_title.each_with_index do |title, title_index|
+        title_text = title.text.strip.downcase
+        # get the index for the key with this text
+        index = @keys[locale.to_sym][:qualifications].values.index{|x| title_text == x}
         if index
-          json[:qualifications][key] = qualifications[index].text.strip    
-        end      
-      end      
+          # get the key name for this text
+          key = @keys[locale.to_sym][:qualifications].keys[index]
+          # save the value
+          json[:qualifications][key] = qualifications[title_index].text.strip    
+        else
+          @missing_param_log.error "Missing qualifications json key for text: '#{title_text}' in record #{id}"
+        end
+      end
     end    
 
     # computers
@@ -259,7 +281,7 @@ def make_requests(ids)
           update_database
           
           # now push to git
-          update_github
+#          update_github
         end
       end
 
