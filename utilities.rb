@@ -149,6 +149,35 @@ def create_job_sql_insert(mysql, json, source, locale)
   if !json["general"]["salary"].nil?
     fields << 'salary'
     values << json["general"]["salary"]
+    
+    # split salary into its start and end components
+    cleaned = nil
+    if locale == 'eng'
+      cleaned = json["general"]["salary"].gsub(' GEL', '').gsub('From ', '').gsub('To ', '').gsub(' - ', '-').gsub('- ', '-').strip
+    elsif locale == 'geo'
+      cleaned = json["general"]["salary"].gsub(' ლარი', '').gsub(' ლარიდან', '').gsub(' ლარამდე', '').gsub('დან', '').gsub(' - ', '-').gsub('- ', '-').strip
+    end
+    
+    # if numbers are present, continue
+    if !cleaned.nil? && !(cleaned =~ /[0-9]/).nil?
+      fields << 'salary_start'
+      fields << 'salary_end'
+      if cleaned.index('-').nil?
+        # no dash, so just save it as it is
+        values << cleaned
+        values << cleaned
+      elsif cleaned[0] == '-'
+        # text is like '-234' so get rid of '-' and save number
+        values << cleaned.gsub('-', '')
+        values << cleaned.gsub('-', '')
+      else
+        # have both start and end salaries
+        # start
+        values << cleaned.split('-')[0]
+        # end
+        values << cleaned.split('-')[1]
+      end
+    end
   end
   if !json["general"]["num_positions"].nil?
     fields << 'num_positions'
