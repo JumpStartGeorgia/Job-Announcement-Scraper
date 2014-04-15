@@ -281,7 +281,7 @@ def make_requests(ids)
           update_database
           
           # now push to git
-#          update_github
+          update_github
         end
       end
 
