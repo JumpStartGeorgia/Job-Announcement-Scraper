@@ -332,6 +332,16 @@ def create_computer_sql_insert(mysql,json, jobs_id)
   return sql  
 end
 
+# dump the database
+def dump_database(db_config, log)
+  log.info "------------------------------"
+  log.info "dumping database"
+  log.info "------------------------------"
+  Subexec.run "mysqldump -u#{db_config["username"]} -p#{db_config["password"]} #{db_config["database"]} | gzip > \"#{db_config["database"]}.sql.gz\" "
+end
+
+
+
 # update github with any changes
 def update_github
   @log.info "------------------------------"

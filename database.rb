@@ -229,6 +229,9 @@ def update_database
     log.info "------------------------------"
     log.info "It took #{Time.now - start} seconds to load #{files_processed} json files into the database"
     log.info "------------------------------"
+
+    # now dump the database
+    dump_database(db_config, log)
     
   rescue Mysql2::Error => e
     log.info "+++++++++++++++++++++++++++++++++"
