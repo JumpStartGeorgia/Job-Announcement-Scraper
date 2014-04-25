@@ -337,7 +337,7 @@ def update_github
   @log.info "------------------------------"
   @log.info "updating git"
   @log.info "------------------------------"
-  x = Subexec.run "git add ."
+  x = Subexec.run "git add -A"
   x = Subexec.run "git commit -am 'Automated new jobs collected on #{Time.now.strftime('%F')}'"
   x = Subexec.run "git push origin master"
 end
