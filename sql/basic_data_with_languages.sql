@@ -1,15 +1,7 @@
 /* get english data */
 select
 j.position, j.provided_by, j.deadline, j.location, j.job_type, 
-js.salary,
-if(instr(js.salary, '-') = 0, js.salary, 
-  if(instr(js.salary, '-') = 1, right(js.salary, length(js.salary)-1), 
-	  mid(js.salary, 1, instr(js.salary, '-')-1))
-) as start_salary,
-if(instr(js.salary, '-') = 0, js.salary, 
-  if(instr(js.salary, '-') = 1, right(js.salary, length(js.salary)-1), 
-	  mid(js.salary, instr(js.salary, '-')+1))
-) as end_salary,
+j.salary, j.salary_start, j.salary_end,
 j.qualifications_degree,j.qualifications_work_experience,
 lang_count.count as num_langs_required,
 kl_eng.writing as 'english writing', kl_eng.reading as 'english reading',
@@ -21,11 +13,6 @@ kl_arm.writing as 'armenian writing', kl_arm.reading as 'armenian reading',
 kl_oct.writing as 'occitian writing', kl_oct.reading as 'occitian reading'
 from
   jobs as j
-  inner join (
-  	select id,
-	  trim(replace(replace(replace(replace(replace(salary, ' GEL', ''), 'From ', ''), 'To ', ''), ' - ', '-'), '- ', '-')) as salary
-  	from jobs
-  ) as js on js.id = j.id
   left join (
    select jobs_id, count(*) as count from knowledge_languages group by jobs_id
   ) as lang_count on lang_count.jobs_id = j.id
@@ -42,15 +29,7 @@ where j.locale = 'eng'
 
 select
 j.position, j.provided_by, j.deadline, j.location, j.job_type, 
-js.salary,
-if(instr(js.salary, '-') = 0, js.salary, 
-  if(instr(js.salary, '-') = 1, right(js.salary, length(js.salary)-1), 
-	  mid(js.salary, 1, instr(js.salary, '-')-1))
-) as start_salary,
-if(instr(js.salary, '-') = 0, js.salary, 
-  if(instr(js.salary, '-') = 1, right(js.salary, length(js.salary)-1), 
-	  mid(js.salary, instr(js.salary, '-')+1))
-) as end_salary,
+j.salary, j.salary_start, j.salary_end,
 j.qualifications_degree,j.qualifications_work_experience,
 lang_count.count as num_langs_required,
 kl_eng.writing as 'english writing', kl_eng.reading as 'english reading',
@@ -62,11 +41,6 @@ kl_arm.writing as 'armenian writing', kl_arm.reading as 'armenian reading',
 kl_oct.writing as 'occitian writing', kl_oct.reading as 'occitian reading'
 from
   jobs as j
-  inner join (
-  	select id,
-    trim(replace(replace(replace(replace(replace(replace(salary, ' ლარი', ''), ' ლარიდან', ''), ' ლარამდე', ''), 'დან', ''), ' - ', '-'), '- ', '-')) as salary
-	  from jobs
-  ) as js on js.id = j.id
   left join (
    select jobs_id, count(*) as count from knowledge_languages group by jobs_id
   ) as lang_count on lang_count.jobs_id = j.id
