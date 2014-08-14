@@ -28,7 +28,7 @@ where j.locale = 'eng'
 /* get georgian data */
 
 select
-j.id, j.position, j.provided_by, j.deadline, j.location, j.job_type, 
+j.position, j.provided_by, j.deadline, j.location, j.job_type, 
 j.salary, j.salary_start, j.salary_end,
 j.qualifications_degree,j.qualifications_work_experience,
 lang_count.count as num_langs_required,
