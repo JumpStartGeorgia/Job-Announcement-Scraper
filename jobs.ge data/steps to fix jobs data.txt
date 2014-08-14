@@ -1,0 +1,19 @@
+## taken from: http://blog.whitesmith.co/latin1-to-utf8/
+
+# create the new database
+CREATE DATABASE `jobs.ge-good` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;  
+
+# Flush the current database schema on the future host, replacing all CHARSET=latin1 occurrences along the way 
+mysqldump -h localhost -u root -p jobs.ge --no-data --skip-set-charset --default-character-set=latin1 \  
+ | sed 's/CHARSET=latin1/CHARSET=utf8/g' \ 
+ | sed 's/CHARACTER SET latin1//g' \ 
+ | sed 's/CHARACTER SET utf8//g' \ 
+ | mysql -h localhost -u root -p jobs.ge-good --default-character-set=utf8
+
+# Flush the current database data on the future host 
+mysqldump -h localhost -u root -p --no-create-db --no-create-info --skip-set-charset --default-character-set=latin1 jobs.ge \  
+ | mysql -h localhost -u root -p jobs.ge-good --default-character-set=utf8 
+
+
+
+

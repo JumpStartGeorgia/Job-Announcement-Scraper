@@ -1,0 +1,79 @@
+ALTER TABLE clients MODIFY display_name_ge varchar(255) CHARACTER SET latin1
+ALTER TABLE clients MODIFY display_name_ge varchar(255) CHARACTER SET binary
+ALTER TABLE clients MODIFY display_name_ge varchar(255) CHARACTER SET utf8
+
+
+
+id 
+category (vacancy, scholarships, trainings, etc - not sure how to id which is which)
+type (no idea yet)
+salary (flag if salary provided but it is burried in jobtext)
+eng_text (flag if jobtext in eng)
+geo_text (flag if jobtext in geo)
+cat_law (flag)
+cat_finance
+cat_admin
+cat_it
+cat_technical
+cat_prmarketing
+cat_sales
+cat_healthcare
+cat_other
+Title
+Title_ge
+Employer
+Employer_ge
+location (name of city(s))
+location_ge
+published
+deadline
+JobText
+JobText_ge
+location_idz (list of ids of districts the job is in - can be multiple)
+
+
+-----------
+
+id - unique id from website
+position
+provided_by
+category
+deadline
+location (we know city(s) and/or districts)
+job_description
+
+
+
+
+---------------------
+
+job_id - unique id from webiste
+position - title
+provided_by - office for job
+category - category of job
+deadline - due date for applying
+salary - salary (could be number, range, intern, or negotiable)
+num_positions - number of positions available
+location - city, town, etc
+job_type - full time, part time, etc
+probation_period - how many months
+contact_address
+contact_phone
+contact_person
+job_description - text of job description
+additional_requirements - text of additional requirements
+additional_info - text of additional info
+qualifications_degree 
+qualifications_work_experience
+qualifications_profession - previous work experince
+qualifications_age
+qualifications_knowledge_legal_acts - text listing laws or such that you should know
+
+for computers requirements:
+program - computer program
+knowledge - level of knowledge (good, very good, etc)
+
+for language requirements:
+language
+writing skills (good, very good, etc)
+speaking skills (good, very good, etc)
