@@ -1382,3 +1382,14 @@ E, [2014-12-25T06:30:07.527309 #942] ERROR -- : Missing contact json key for tex
 E, [2014-12-25T06:30:07.652033 #942] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24593
 E, [2014-12-25T06:30:07.671350 #942] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24582
 E, [2014-12-25T06:30:07.722312 #942] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24594
+E, [2014-12-26T06:30:06.170968 #16582] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24618
+E, [2014-12-31T06:30:05.945912 #28300] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24640
+E, [2015-01-06T06:30:05.592174 #8670] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24699
+E, [2015-01-07T06:30:05.499512 #20891] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24720
+E, [2015-01-09T06:30:10.564079 #26096] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24743
+E, [2015-01-09T06:30:11.747432 #26096] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24745
+E, [2015-01-09T06:30:11.934004 #26096] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24740
+E, [2015-01-09T06:30:12.506372 #26096] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24739
+E, [2015-01-13T06:30:05.407927 #3458] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24795
+E, [2015-01-16T06:30:05.535035 #1336] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24875
+E, [2015-01-17T06:30:06.158436 #28450] ERROR -- : Missing contact json key for text: 'საკონკურსო - საატესტაციო კომისიის მისამართი:' in record 24995
